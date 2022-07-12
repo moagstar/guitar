@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<body>
+<div id="prompt"></div>
+<div id="scale" style="padding-bottom: 10px"></div>
+<button onclick="makeGuess('A')">A</button>
+<button onclick="makeGuess('A#')">A#</button>
+<button onclick="makeGuess('B')">B</button>
+<button onclick="makeGuess('C')">C</button>
+<button onclick="makeGuess('C#')">C#</button>
+<button onclick="makeGuess('D')">D</button>
+<button onclick="makeGuess('D#')">D#</button>
+<button onclick="makeGuess('E')">E</button>
+<button onclick="makeGuess('F')">F</button>
+<button onclick="makeGuess('F#')">F#</button>
+<button onclick="makeGuess('G')">G</button>
+<button onclick="makeGuess('G#')">G#</button>
+<script>
+
+    const addText = (id, text, element) => {
+        const el = document.createElement(element);
+        el.appendChild(document.createTextNode(text));
+        document.getElementById(id).appendChild(el);
+    };
+
+    const CHORDS = [
+        {name: 'A', formula: ['A', 'C#', 'E']},
+        {name: 'A#', formula: ['A#', 'D', 'F']},
+        {name: 'B', formula: ['B', 'D#', 'F#']},
+        {name: 'C', formula: ['C', 'E', 'G']},
+        {name: 'C#', formula: ['C#', 'F', 'G#']},
+        {name: 'D', formula: ['D', 'F#', 'A']},
+        {name: 'D#', formula: ['D#', 'G', 'A#']},
+        {name: 'E', formula: ['G#', 'B', '']},
+        {name: 'F', formula: ['F', 'A', 'C']},
+        {name: 'F#', formula: ['F#', 'A#', 'C#']},
+        {name: 'G', formula: ['G', 'B', 'D']},
+        {name: 'G#', formula: ['G#', 'C', 'D#']},
+        {name: 'Am', formula: ['A', 'C', 'E']},
+        {name: 'A#m', formula: ['A#', 'C#', 'F']},
+        {name: 'Bm', formula: ['B', 'D', 'F#']},
+        {name: 'Cm', formula: ['C', 'D#', 'G']},
+        {name: 'C#m', formula: ['C#', 'E', 'G#']},
+        {name: 'Dm', formula: ['D', 'F', 'A']},
+        {name: 'D#m', formula: ['D#', 'F#', 'A#']},
+        {name: 'Em', formula: ['E', 'G', 'B']},
+        {name: 'Fm', formula: ['F', 'G#', 'C']},
+        {name: 'F#m', formula: ['F#', 'A', 'C#']},
+        {name: 'Gm', formula: ['G', 'A#', 'D']},
+        {name: 'G#m', formula: ['G#', 'B', 'D#']},
+        {name: 'A dim', formula: ['A', 'C', 'D#']},
+        {name: 'A# dim', formula: ['A#', 'C#', 'E']},
+        {name: 'B dim', formula: ['B', 'D', 'F']},
+        {name: 'C dim', formula: ['C', 'D#', 'F#']},
+        {name: 'C# dim', formula: ['C#', 'E', 'G']},
+        {name: 'D dim', formula: ['D', 'F', 'G#']},
+        {name: 'D# dim', formula: ['D#', 'G#', 'B']},
+        {name: 'E dim', formula: ['E', 'G', 'A#']},
+        {name: 'F dim', formula: ['F', 'G#', 'B']},
+        {name: 'F# dim', formula: ['F#', 'A', 'C']},
+        {name: 'G dim', formula: ['G', 'A#', 'C#']},
+        {name: 'G# dim', formula: ['G#', 'B', 'D']},
+    ]
+    const chord = CHORDS[Math.floor(Math.random() * CHORDS.length)];
+    const expected = chord.formula.join("-");
+
+    addText('prompt', `${chord.name}`, 'p');
+
+    const scaleEl = document.getElementById('scale');
+    document.makeGuess = (guess) => {
+        if (scaleEl.childElementCount === 2) {
+            addText('scale', `${guess}`, 'span');
+            addText('prompt', (scaleEl.innerText === expected) ? 'CORRECT!': 'WRONG! ' + expected, 'p');
+        } else {
+            addText('scale', `${guess}-`, 'span');
+        }
+    }
+
+</script>
+</body>
+</html>
