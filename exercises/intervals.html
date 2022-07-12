@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<body>
+<div id="prompt"></div>
+<button onclick="makeGuess('A')">A</button>
+<button onclick="makeGuess('A#')">A#</button>
+<button onclick="makeGuess('B')">B</button>
+<button onclick="makeGuess('C')">C</button>
+<button onclick="makeGuess('C#')">C#</button>
+<button onclick="makeGuess('D')">D</button>
+<button onclick="makeGuess('D#')">D#</button>
+<button onclick="makeGuess('E')">E</button>
+<button onclick="makeGuess('F')">F</button>
+<button onclick="makeGuess('F#')">F#</button>
+<button onclick="makeGuess('G')">G</button>
+<button onclick="makeGuess('G#')">G#</button>
+<script>
+    const addText = (id, text, element) => {
+        const el = document.createElement(element);
+        el.appendChild(document.createTextNode(text));
+        document.getElementById(id).appendChild(el);
+    };
+    const NOTES = ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#'];
+    const INTERVALS = {
+        0: 'Perfect prime',
+        1: 'Minor 2nd',
+        2: 'Major 2nd',
+        3: 'Minor 3rd',
+        4: 'Major 3rd',
+        5: 'Perfect Fourth',
+        6: 'Tritone',
+        7: 'Perfect Fifth',
+        8: 'Minor 6th',
+        9: 'Major 6th',
+        10: 'Minor 7th',
+        11: 'Major 7th',
+        12: 'Perfect Octave',
+    };
+    const note = Math.floor(Math.random() * 12);
+    const interval = Math.ceil(Math.random() * 11);
+    const intervalName = INTERVALS[interval];
+
+    addText('prompt', `${NOTES[note]} ${intervalName} (${interval})`, 'p');
+
+    document.makeGuess = (guess) => {
+        const expected = NOTES[(note + interval) % NOTES.length];
+        addText('prompt', (guess === expected) ? 'CORRECT!': 'WRONG!', 'p');
+    }
+
+</script>
+</body>
+</html>

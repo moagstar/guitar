@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        table {
+          table-layout: fixed;
+          width: 100%;
+          text-align: center;
+        }
+        td {
+            background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAAVCAIAAAAIMBNTAAABhGlDQ1BJQ0MgcHJvZmlsZQAAKJF9kT1Iw0AcxV9TpaIVBTuIOGSoThZERRy1CkWoEGqFVh1MLv2CJg1Jiouj4Fpw8GOx6uDirKuDqyAIfoA4OjkpukiJ/0sKLWI8OO7Hu3uPu3eAUC8zzeoYBzTdNlOJuJjJroqhV4QQRg/6EZSZZcxJUhK+4+seAb7exXiW/7k/R6+asxgQEIlnmWHaxBvE05u2wXmfOMKKskp8Tjxm0gWJH7muePzGueCywDMjZjo1TxwhFgttrLQxK5oa8RRxVNV0yhcyHquctzhr5Spr3pO/MJzTV5a5TnMYCSxiCRJEKKiihDJsxGjVSbGQov24j3/I9UvkUshVAiPHAirQILt+8D/43a2Vn5zwksJxoPPFcT5GgNAu0Kg5zvex4zROgOAzcKW3/JU6MPNJeq2lRY+Avm3g4rqlKXvA5Q4w+GTIpuxKQZpCPg+8n9E3ZYGBW6B7zeutuY/TByBNXSVvgINDYLRA2es+7+5q7+3fM83+fgDp13Jw/mj5DwAAAAlwSFlzAAAuIwAALiMBeKU/dgAAAAd0SU1FB+YHDAsbIoQ8VAgAAAAZdEVYdENvbW1lbnQAQ3JlYXRlZCB3aXRoIEdJTVBXgQ4XAAAAGUlEQVQI12P4//8/EwMDA0G8aNEiBiLVAgC89wgH5r51xwAAAABJRU5ErkJggg==");
+            background-repeat: repeat-x;
+            background-position: center;
+            border-right: 3px solid black;
+        }
+        .marking {
+            background-image: none;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+<table id="fretboard">
+</table>
+<table>
+    <tr>
+        <td class="marking"></td>
+        <td class="marking"></td>
+        <td class="marking">.</td>
+        <td class="marking"></td>
+        <td class="marking">.</td>
+        <td class="marking"></td>
+        <td class="marking">.</td>
+        <td class="marking"></td>
+        <td class="marking">.</td>
+        <td class="marking"></td>
+        <td class="marking"></td>
+        <td class="marking">:</td>
+    </tr>
+</table>
+<br>
+<br>
+<button onclick="makeGuess('A')">A</button>
+<button onclick="makeGuess('A#')">A#</button>
+<button onclick="makeGuess('B')">B</button>
+<button onclick="makeGuess('C')">C</button>
+<button onclick="makeGuess('C#')">C#</button>
+<button onclick="makeGuess('D')">D</button>
+<button onclick="makeGuess('D#')">D#</button>
+<button onclick="makeGuess('E')">E</button>
+<button onclick="makeGuess('F')">F</button>
+<button onclick="makeGuess('F#')">F#</button>
+<button onclick="makeGuess('G')">G</button>
+<button onclick="makeGuess('G#')">G#</button>
+<script>
+    const STRINGS = ['F', 'C', 'G#', 'D#', 'A#', 'F'];
+    const NOTES = ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#'];
+    const fretboard = document.getElementById('fretboard');
+
+    const chosenString = Math.floor(Math.random() * 6);
+    const chosenFret = Math.ceil(Math.random() * 12);
+
+    for (let stringNum in STRINGS) {
+        stringNum = parseInt(stringNum);
+        const string = chosenString[stringNum];
+        const tr = fretboard.appendChild(document.createElement('tr'));
+        for (const fret of Array.from(Array(12).keys())) {
+            const td = document.createElement('td');
+            const note = NOTES[(NOTES.indexOf(string) + fret) % NOTES.length];
+            console.log(chosenString);
+            if (chosenString === stringNum && chosenFret === fret) {
+                td.appendChild(document.createTextNode('?'));
+            } else {
+                td.appendChild(document.createTextNode('\u00A0'));
+            }
+            tr.appendChild(td);
+        }
+    }
+</script>
+</body>
+</html>
