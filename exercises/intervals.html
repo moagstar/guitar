@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <html>
+<head>
+    <link rel="stylesheet" href="mvp.css">
+</head>
 <body>
 <div id="prompt"></div>
 <button onclick="makeGuess('A')">A</button>
@@ -40,7 +43,7 @@
     const interval = Math.ceil(Math.random() * 11);
     const intervalName = INTERVALS[interval];
 
-    addText('prompt', `${NOTES[note]} ${intervalName} (${interval})`, 'p');
+    addText('prompt', `${NOTES[note]} - ${intervalName} (${interval})`, 'p');
 
     document.makeGuess = (guess) => {
         const expected = NOTES[(note + interval) % NOTES.length];
