@@ -52,30 +52,38 @@
 <button onclick="makeGuess('F#')">F#</button>
 <button onclick="makeGuess('G')">G</button>
 <button onclick="makeGuess('G#')">G#</button>
+<div id="result"></div>
 <script>
+
+    const addText = (parent, text, element) => {
+        const el = document.createElement(element);
+        el.appendChild(document.createTextNode(text));
+        parent.appendChild(el);
+    };
+
     const STRINGS = ['F', 'C', 'G#', 'D#', 'A#', 'F'];
     const NOTES = ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#'];
     const fretboard = document.getElementById('fretboard');
 
     const chosenString = Math.floor(Math.random() * 6);
-    const chosenFret = Math.ceil(Math.random() * 12);
+    const chosenFret = Math.ceil(Math.random() * 11);
+    const chosenNote = NOTES[(NOTES.indexOf(STRINGS[chosenString]) + chosenFret) % NOTES.length];
 
     for (let stringNum in STRINGS) {
         stringNum = parseInt(stringNum);
-        const string = chosenString[stringNum];
+        const string = STRINGS[stringNum];
         const tr = fretboard.appendChild(document.createElement('tr'));
         for (const fret of Array.from(Array(12).keys())) {
-            const td = document.createElement('td');
             const note = NOTES[(NOTES.indexOf(string) + fret) % NOTES.length];
-            console.log(chosenString);
-            if (chosenString === stringNum && chosenFret === fret) {
-                td.appendChild(document.createTextNode('?'));
-            } else {
-                td.appendChild(document.createTextNode('\u00A0'));
-            }
-            tr.appendChild(td);
+            const text = (chosenString === stringNum && chosenFret === fret) ? '?' : '\u00A0';
+            addText(tr, text, 'td');
         }
     }
+
+    const makeGuess = (guess) => {
+        const text = (chosenNote === guess) ? 'CORRECT!' : 'WRONG!';
+        addText(document.getElementById('result'), text, 'p');
+    };
 </script>
 </body>
 </html>
