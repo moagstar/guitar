@@ -3,28 +3,19 @@
 <body>
 <div id="prompt"></div>
 <div id="scale" style="padding-bottom: 10px"></div>
-<button onclick="makeGuess('A')">A</button>
-<button onclick="makeGuess('A#')">A#</button>
-<button onclick="makeGuess('B')">B</button>
-<button onclick="makeGuess('C')">C</button>
-<button onclick="makeGuess('C#')">C#</button>
-<button onclick="makeGuess('D')">D</button>
-<button onclick="makeGuess('D#')">D#</button>
-<button onclick="makeGuess('E')">E</button>
-<button onclick="makeGuess('F')">F</button>
-<button onclick="makeGuess('F#')">F#</button>
-<button onclick="makeGuess('G')">G</button>
-<button onclick="makeGuess('G#')">G#</button>
+<div id="buttons"></div>
 <script>
 
-    const addText = (id, text, element) => {
+    const addElement = (element, parentId, text) => {
         const el = document.createElement(element);
         el.appendChild(document.createTextNode(text));
-        document.getElementById(id).appendChild(el);
+        document.getElementById(parentId).appendChild(el);
+        return el;
     };
 
     const NOTES = ['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#'];
-    let noteIndex = Math.floor(Math.random() * NOTES.length);
+    const tonicNoteIndex = Math.floor(Math.random() * NOTES.length);
+    const tonicNote = NOTES[tonicNoteIndex];
 
     const SCALE_FORMULAS = [
         {name: 'Ionian (major)', formula: [2, 2, 1, 2, 2, 2, 1]},
@@ -37,23 +28,44 @@
         //{name: 'Harmonic minor', formula: [2, 1, 2, 2, 1, 3, 1]},
         //{name: 'Melodic minor', formula: [2, 1, 2, 2, 2, 2, 1]},
         //{name: 'Blues', formula: [3, 2, 1, 1, 3, 2]},
-    ]
+    ];
+    const SHARP_TO_FLAT = {
+        'A#': 'Bb',
+        'C#': 'Db',
+        'D#': 'Eb',
+        'F#': 'Gb',
+        'G#': 'Ab',
+    };
+    const sharpToFlat = (note) => SHARP_TO_FLAT[note] || note;
     const scale = SCALE_FORMULAS[Math.floor(Math.random() * SCALE_FORMULAS.length)];
 
-    addText('prompt', `${NOTES[noteIndex]} ${scale.name}`, 'p');
-
-    let expected = '';
-    for (const interval of scale.formula) {
-        expected += NOTES[noteIndex % NOTES.length] + '-';
-        noteIndex += interval;
-    }
+    const tonic = sharpToFlat(tonicNote);
+    const isFlat = (tonicNote === 'F') || (SHARP_TO_FLAT[tonicNote]);
+    addElement('p', 'prompt', `${tonic} ${scale.name}`);
 
     const scaleEl = document.getElementById('scale');
-    document.makeGuess = (guess) => {
-        addText('scale', `${guess}-`, 'span');
+    const makeGuess = (guess) => {
+        addElement('span', 'scale', `${guess}-`);
         if (scaleEl.childElementCount === 7) {
-            addText('prompt', (scaleEl.innerText === expected) ? 'CORRECT!': 'WRONG! ' + expected, 'p');
+            addElement('p', 'prompt', (scaleEl.innerText === expected) ? 'CORRECT!': 'WRONG! ' + expected);
         }
+    }
+
+    for (const note of NOTES) {
+        const possiblyFlattenedNote = isFlat ? sharpToFlat(note) : note;
+        const button = addElement('button', 'buttons', possiblyFlattenedNote);
+        button.onclick = () => makeGuess(possiblyFlattenedNote);
+    }
+
+    let expected = '';
+    let noteIndex = tonicNoteIndex;
+    for (const interval of scale.formula) {
+        let expectedNote = NOTES[noteIndex % NOTES.length]
+        if(isFlat) {
+            expectedNote = sharpToFlat(expectedNote)
+        }
+        expected += expectedNote + '-';
+        noteIndex += interval;
     }
 
 </script>
